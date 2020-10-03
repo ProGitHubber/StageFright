@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2398902965875510110}
   - component: {fileID: -2156232699723802813}
   m_Layer: 5
-  m_Name: Note Background
+  m_Name: Note Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,16 +90,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 10
+    m_Right: 10
+    m_Top: 10
+    m_Bottom: 10
   m_ChildAlignment: 4
-  m_Spacing: 0
+  m_Spacing: 10
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
@@ -118,3 +118,4 @@ MonoBehaviour:
   columnID: 
   buttonPrefab: {fileID: 328701332946234140, guid: 68379cd9955c785428094ee4e8847b86, type: 3}
   noteButtons: []
+  highlightCol: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0.5137255}

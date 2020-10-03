@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Intrument : MonoBehaviour
+public class Instrument : MonoBehaviour
 {
     Sequencer s;
     Animator anim;
@@ -22,7 +22,7 @@ public class Intrument : MonoBehaviour
         {
             //do stuff
             anim.SetTrigger("Attack");
-            Debug.Log(gameObject.name + " played a note");
+            //Debug.Log(gameObject.name + " played a note");
         }
     }
 }

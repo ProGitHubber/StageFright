@@ -12,6 +12,7 @@ public class NoteColumn : MonoBehaviour
     public List<NoteButton> noteButtons = new List<NoteButton>();
 
     Image columnBackground;
+    public Color highlightCol = Color.grey;
 
     private void Start()
     {
@@ -24,11 +25,11 @@ public class NoteColumn : MonoBehaviour
     {
         if (int.Parse(columnID) == s.currentNote && s.playing)
         {
-            columnBackground.color = Color.blue;
+            columnBackground.color = highlightCol;
         }
         else
         {
-            columnBackground.color = Color.white;
+            columnBackground.color = Color.clear;
         }
     }
 

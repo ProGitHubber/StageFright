@@ -14,7 +14,7 @@ public class NoteButton : MonoBehaviour
     {
         s = FindObjectOfType<Sequencer>();
         b = GetComponent<Button>();
-        b.onClick.AddListener(Click);
+        //b.onClick.AddListener(Click);
     }
 
     private void Update()
@@ -46,8 +46,8 @@ public class NoteButton : MonoBehaviour
         }
     }
 
-    void Click()
-    {
-        s.ToggleNote(buttonID);
-    }
+    //void Click()
+    //{
+    //    s.ToggleNote(buttonID);
+    //}
 }

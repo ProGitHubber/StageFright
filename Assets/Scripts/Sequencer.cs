@@ -57,7 +57,9 @@ public class Sequencer : MonoBehaviour
     void Start()
     {
         InitialiseNotes();
+
         currentMaxActiveNotes = startingActiveNotes;
+        RandomiseNotes();
     }
 
     [ContextMenu("Initialise Notes")]
@@ -122,7 +124,17 @@ public class Sequencer : MonoBehaviour
         if (currentActiveNotes < currentMaxActiveNotes)
         {
             ToggleRandomNote();
+            return;
         }
+        else
+        {
+            currentMaxActiveNotes++;
+            if (currentMaxActiveNotes > maxActiveNotes)
+            {
+                currentMaxActiveNotes = maxActiveNotes;
+            }
+        }
+
     }
 
 
