@@ -40,11 +40,11 @@ public class CharacterMover : MonoBehaviour
         {
             if (Input.GetButton("Fire2"))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, floormask))
+                Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit2;
+                if (Physics.Raycast(ray2, out hit2, floormask))
                 {
-                    character.target.position = hit.point;
+                    character.target.position = hit2.point;
                 }
             }
         }
