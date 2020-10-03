@@ -45,6 +45,9 @@ public class Sequencer : MonoBehaviour
 
     public UnityEvent onNewNote = new UnityEvent();
 
+    public int maxNotes;
+    public int currentNotes;
+
     // Start is called before the first frame update
     void Start()
     {
