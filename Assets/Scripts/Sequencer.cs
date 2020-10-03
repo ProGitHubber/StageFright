@@ -48,10 +48,16 @@ public class Sequencer : MonoBehaviour
     public int maxNotes;
     public int currentNotes;
 
+    public int startingActiveNotes = 2;
+    public int maxActiveNotes;
+    public int currentMaxActiveNotes;
+    public int currentActiveNotes;
+
     // Start is called before the first frame update
     void Start()
     {
         InitialiseNotes();
+        currentMaxActiveNotes = startingActiveNotes;
     }
 
     [ContextMenu("Initialise Notes")]
@@ -101,5 +107,30 @@ public class Sequencer : MonoBehaviour
         int layer = int.Parse(noteToSet.Substring(2, 2));
 
         notes[note].toggleLine(layer);
+    }
+
+    public void ToggleRandomNote()
+    {
+
+        int note = Random.Range(0, notes.Count);
+        int layer = Random.Range(0, layers);
+        if (!notes[note].currentlyPlaying[layer])
+        {
+            ToggleNote(note.ToString("00") + layer.ToString("00"));
+            currentActiveNotes++;
+        }
+        if (currentActiveNotes < currentMaxActiveNotes)
+        {
+            ToggleRandomNote();
+        }
+    }
+
+
+
+    public void RandomiseNotes()
+    {
+        InitialiseNotes();
+        currentActiveNotes = 0;
+        ToggleRandomNote();
     }
 }
