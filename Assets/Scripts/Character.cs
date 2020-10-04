@@ -8,14 +8,19 @@ public class Character : MonoBehaviour
     public Sprite portrait;
     public Transform target;
     public float moveSpeed, stopDis;
-    bool moving;
     Vector3 previousPos;
-    public bool playerCharacter;
+
+    public bool grabbed;
 
     Animator anim;
+
+    Rigidbody rb;
+
+    public Instrument instrument;
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
 
@@ -25,18 +30,16 @@ public class Character : MonoBehaviour
         if (target && Vector3.Distance(transform.position, target.position) > stopDis)
         {
             //move towards target
-            transform.position += (target.position - transform.position).normalized * moveSpeed * Time.deltaTime;
+            rb.MovePosition(transform.position + (target.position - transform.position).normalized * moveSpeed * Time.deltaTime);
         }
 
         if (transform.position != previousPos)
         {
-            moving = true;
             anim.SetBool("Moving", true);
             previousPos = transform.position;
         }
         else
         {
-            moving = false;
             anim.SetBool("Moving", false);
         }
     }

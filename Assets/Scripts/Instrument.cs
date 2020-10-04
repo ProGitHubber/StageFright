@@ -8,6 +8,14 @@ public class Instrument : MonoBehaviour
     Sequencer s;
     Animator anim;
     public int layer;
+
+    public float lightAttackCooldown;
+    float cooldownTimer;
+    public UnityEvent onLightAttack, onHeavyAttack;
+
+    public Bullet bulletPrefab;
+    public Transform attackOrigin;
+    public GameObject heavyAttackPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,13 +24,36 @@ public class Instrument : MonoBehaviour
         s.onNewNote.AddListener(PlayNote);
     }
 
+    private void Update()
+    {
+        if (cooldownTimer >= 0)
+        {
+            cooldownTimer -= Time.deltaTime;
+        }
+    }
+
     void PlayNote()
     {
         if (s.output[layer])
         {
             //do stuff
             anim.SetTrigger("Attack");
-            //Debug.Log(gameObject.name + " played a note");
+            HeavyAttack();
         }
+    }
+
+    public void LightAttack()
+    {
+        if (cooldownTimer <= 0)
+        {
+            onLightAttack.Invoke();
+            Instantiate(bulletPrefab, attackOrigin.position, attackOrigin.rotation);
+        }
+    }
+
+    void HeavyAttack()
+    {
+        onHeavyAttack.Invoke();
+        Instantiate(heavyAttackPrefab, attackOrigin.position, attackOrigin.rotation);
     }
 }
