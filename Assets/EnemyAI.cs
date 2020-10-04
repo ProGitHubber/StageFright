@@ -18,7 +18,7 @@ public class EnemyAI : MonoBehaviour
         home.position = transform.position;
         me = GetComponent<Character>();
         Invoke("CompileList", 0.1f);
-        me.onTargetReached.AddListener(ReturnHome);
+        me.onTargetReached.AddListener(StealTheDude);
     }
 
 
@@ -41,11 +41,19 @@ public class EnemyAI : MonoBehaviour
         me.target = targets[Random.Range(0, targets.Count)].transform;
     }
 
-    void ReturnHome()
+    public void StealTheDude()
     {
         if (!goingHome)
         {
             me.target.GetComponent<Character>().grabbedBy = me;
+            ReturnHome();
+        }
+    }
+
+    public void ReturnHome()
+    {
+        if (!goingHome)
+        {
             me.target = home;
             goingHome = true;
         }
@@ -53,11 +61,5 @@ public class EnemyAI : MonoBehaviour
         { 
             gameObject.SetActive(false);
         }
-    }
-
-
-    private void OnParticleTrigger()
-    {
-        
     }
 }

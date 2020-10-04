@@ -33,12 +33,16 @@ public class Bullet : MonoBehaviour
 
         //setclosestoneastarget
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         //checkforenemy
+        EnemyAI e = other.GetComponentInParent<EnemyAI>();
 
+        if (e)
+        {
+            e.ReturnHome();
+            gameObject.SetActive(false);
+        }
         //deal damage
-
-        gameObject.SetActive(false);
     }
 }

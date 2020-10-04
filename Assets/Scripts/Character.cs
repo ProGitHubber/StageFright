@@ -35,7 +35,7 @@ public class Character : MonoBehaviour
         {
             if (instrument.enabled)
             {
-                instrument.Unplug();
+                //instrument.Unplug();
             }
             target = grabbedBy.transform;
             moveSpeed = grabbedBy.moveSpeed;

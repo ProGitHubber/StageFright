@@ -17,32 +17,42 @@ public class CameraController : MonoBehaviour
     [Range(0,1)]
     public float mouseDeadZone;
 
+    public CharacterMover cm;
+
+    public Transform defaultPos;
+
     // Update is called once per frame
     void Update()
     {
-        Vector3 pos = cameraRef.transform.position;
-        if (Input.GetKey(KeyCode.W)) //|| Input.mousePosition.y >= Screen.height - (Screen.height * mouseDeadZone))
+        if (!cm.character)
         {
-            pos.z += camMoveSpeed * Time.deltaTime;
+            cameraRef = defaultPos;
         }
-        if (Input.GetKey(KeyCode.S)) //|| Input.mousePosition.y <= (Screen.height * mouseDeadZone))
+        else
         {
-            pos.z -= camMoveSpeed * Time.deltaTime;
+            cameraRef = cm.character.transform;
+            cam.rotation = Quaternion.Lerp(cam.transform.rotation, Quaternion.LookRotation((cameraRef.position - cam.transform.position).normalized), camMoveSpeed * Time.deltaTime);
         }
-        if (Input.GetKey(KeyCode.A)) //|| Input.mousePosition.x >= (Screen.width * mouseDeadZone))
-        {
-            pos.x -= camMoveSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D)) //|| Input.mousePosition.x <= Screen.width - (Screen.width * mouseDeadZone))
-        {
-            pos.x += camMoveSpeed * Time.deltaTime;
-        }
-        cameraRef.position = pos;
+        //Vector3 pos = cameraRef.transform.position;
+        //if (Input.GetKey(KeyCode.W)) //|| Input.mousePosition.y >= Screen.height - (Screen.height * mouseDeadZone))
+        //{
+        //    pos.z -= camMoveSpeed * Time.deltaTime;
+        //}
+        //if (Input.GetKey(KeyCode.S)) //|| Input.mousePosition.y <= (Screen.height * mouseDeadZone))
+        //{
+        //    pos.z += camMoveSpeed * Time.deltaTime;
+        //}
+        //if (Input.GetKey(KeyCode.A)) //|| Input.mousePosition.x >= (Screen.width * mouseDeadZone))
+        //{
+        //    pos.x += camMoveSpeed * Time.deltaTime;
+        //}
+        //if (Input.GetKey(KeyCode.D)) //|| Input.mousePosition.x <= Screen.width - (Screen.width * mouseDeadZone))
+        //{
+        //    pos.x -= camMoveSpeed * Time.deltaTime;
+        //}
+        //cameraRef.position = pos;
         Vector3 target = cameraRef.transform.position + camOffset;
-        cam.transform.position = Vector3.Lerp(transform.position, target, 5 * Time.deltaTime);
-        if (cameraTarget)
-        {
-            cam.LookAt(cameraTarget);
-        }
+        cam.transform.position = Vector3.Lerp(cam.transform.position, target, camMoveSpeed * Time.deltaTime);
+
     }
 }

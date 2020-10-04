@@ -58,7 +58,10 @@ public class CharacterMover : MonoBehaviour
 
     void SwitchToCharacter(int CHAR)
     {
-        character.selectionCircle.SetActive(false);
+        if (character)
+        {
+            character.selectionCircle.SetActive(false);
+        }
         character = playableCharacters[CHAR];
         currentCharacterPortrait.sprite = character.portrait;
         character.selectionCircle.SetActive(true);
