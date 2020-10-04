@@ -14,8 +14,8 @@ public class Instrument : MonoBehaviour
     public UnityEvent onLightAttack, onHeavyAttack;
 
     public Bullet bulletPrefab;
-    public Transform attackOrigin;
-    public GameObject heavyAttackPrefab;
+    public Transform[] attackOrigins;
+    public GameObject heavyAttack;
     // Start is called before the first frame update
     void Start()
     {
@@ -47,13 +47,32 @@ public class Instrument : MonoBehaviour
         if (cooldownTimer <= 0)
         {
             onLightAttack.Invoke();
-            Instantiate(bulletPrefab, attackOrigin.position, attackOrigin.rotation);
+            if (bulletPrefab)
+            {
+                foreach (Transform attackOrigin in attackOrigins)
+                {
+                    if (attackOrigin.gameObject.activeInHierarchy)
+                        Instantiate(bulletPrefab.gameObject, attackOrigin.position, attackOrigin.rotation);
+                }
+            }
+            cooldownTimer = lightAttackCooldown;
         }
     }
 
     void HeavyAttack()
     {
         onHeavyAttack.Invoke();
-        Instantiate(heavyAttackPrefab, attackOrigin.position, attackOrigin.rotation);
+        if (heavyAttack)
+            heavyAttack.SetActive(true);
+        onLightAttack.Invoke();
+        if (bulletPrefab)
+        {
+            foreach (Transform attackOrigin in attackOrigins)
+            {
+                if (attackOrigin.gameObject.activeInHierarchy)
+                    Instantiate(bulletPrefab.gameObject, attackOrigin.position, attackOrigin.rotation);
+            }
+        }
+        cooldownTimer = lightAttackCooldown;
     }
 }

@@ -30,7 +30,7 @@ public class CharacterMover : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.Alpha3))
         {
-            SwitchToCharacter(3);
+            SwitchToCharacter(2);
         }
         
         if (character && !character.grabbed)

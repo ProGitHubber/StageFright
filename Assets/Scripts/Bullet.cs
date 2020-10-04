@@ -10,6 +10,10 @@ public class Bullet : MonoBehaviour
     private void Update()
     {
         lifeTime -= Time.deltaTime;
+        if (lifeTime <= 0)
+        {
+            Destroy(gameObject, 1);
+        }
         if (target)
         {
             transform.position = Vector3.Lerp(transform.position, target.position, 10 * Time.deltaTime);
