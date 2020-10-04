@@ -16,6 +16,7 @@ public class Instrument : MonoBehaviour
     public Bullet bulletPrefab;
     public Transform[] attackOrigins;
     public GameObject heavyAttack;
+    public float heavyAttackDelay = 0.25f;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +39,7 @@ public class Instrument : MonoBehaviour
         {
             //do stuff
             anim.SetTrigger("Attack");
-            HeavyAttack();
+            Invoke("HeavyAttack", heavyAttackDelay);
         }
     }
 
@@ -74,5 +75,10 @@ public class Instrument : MonoBehaviour
             }
         }
         cooldownTimer = lightAttackCooldown;
+    }
+    public void Unplug()
+    {
+        s.onNewNote.RemoveAllListeners();
+        enabled = false;
     }
 }

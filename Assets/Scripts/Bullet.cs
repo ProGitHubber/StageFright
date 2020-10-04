@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float lifeTime = 2;
+    public float deathTime = 1;
     public float speed = 3;
     public Transform target;
     private void Update()
@@ -12,7 +13,8 @@ public class Bullet : MonoBehaviour
         lifeTime -= Time.deltaTime;
         if (lifeTime <= 0)
         {
-            Destroy(gameObject, 1);
+            Destroy(gameObject, deathTime);
+            speed = 0;
         }
         if (target)
         {
