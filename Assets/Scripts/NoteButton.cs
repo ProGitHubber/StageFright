@@ -8,7 +8,9 @@ public class NoteButton : MonoBehaviour
     public string buttonID;
     Sequencer s;
     Button b;
-
+    public Color[] colors;
+    public Color successColor;
+    public Color failColor;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,18 +21,35 @@ public class NoteButton : MonoBehaviour
 
     private void Update()
     {
+        
         int note = int.Parse(buttonID.Substring(0, 2));
         int layer = int.Parse(buttonID.Substring(2, 2));
-
+        if (note == 0)
+        {
+            b.image.color = Color.clear;
+            return;
+        }
+        if (s.currentNote > note)
+        {
+            if (s.notes[note].cleared)
+            {
+                b.image.color = successColor;
+            }
+            else
+            {
+                b.image.color = failColor;
+            }
+            return;
+        }
         if (s.notes[note].currentlyPlaying[layer])
         {
             if (s.currentNote == note)
             {
-                b.image.color = Color.cyan;
+                b.image.color = colors[layer];
             }
             else
             {
-                b.image.color = Color.green;
+                b.image.color = colors[layer];
             }
         }
         else

@@ -17,9 +17,14 @@ public class Instrument : MonoBehaviour
     public Transform[] attackOrigins;
     public GameObject heavyAttack;
     public float heavyAttackDelay = 0.25f;
+
+    public KeyCode key = KeyCode.Alpha1;
+
+    Character c;
     // Start is called before the first frame update
     void Start()
     {
+        c = GetComponentInParent<Character>();
         anim = GetComponent<Animator>();
         s = FindObjectOfType<Sequencer>();
         s.onNewNote.AddListener(PlayNote);
@@ -31,6 +36,13 @@ public class Instrument : MonoBehaviour
         {
             cooldownTimer -= Time.deltaTime;
         }
+
+        if (Input.GetKeyDown(key))
+        {
+            //s.signalsRecieved[layer] = "1";
+            anim.SetTrigger("Attack");
+            Invoke("HeavyAttack", heavyAttackDelay);
+        }
     }
 
     void PlayNote()
@@ -38,8 +50,9 @@ public class Instrument : MonoBehaviour
         if (s.output[layer])
         {
             //do stuff
-            anim.SetTrigger("Attack");
-            Invoke("HeavyAttack", heavyAttackDelay);
+
+                //anim.SetTrigger("Attack");
+                //Invoke("HeavyAttack", heavyAttackDelay);
         }
     }
 
@@ -65,16 +78,16 @@ public class Instrument : MonoBehaviour
         onHeavyAttack.Invoke();
         if (heavyAttack)
             heavyAttack.SetActive(true);
-        onLightAttack.Invoke();
-        if (bulletPrefab)
-        {
-            foreach (Transform attackOrigin in attackOrigins)
-            {
-                if (attackOrigin.gameObject.activeInHierarchy)
-                    Instantiate(bulletPrefab.gameObject, attackOrigin.position, attackOrigin.rotation);
-            }
-        }
-        cooldownTimer = lightAttackCooldown;
+        //onLightAttack.Invoke();
+        //if (bulletPrefab)
+        //{
+        //    foreach (Transform attackOrigin in attackOrigins)
+        //    {
+        //        if (attackOrigin.gameObject.activeInHierarchy)
+        //            Instantiate(bulletPrefab.gameObject, attackOrigin.position, attackOrigin.rotation);
+        //    }
+        //}
+        //cooldownTimer = lightAttackCooldown;
     }
     public void Unplug()
     {

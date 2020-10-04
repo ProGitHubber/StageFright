@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class Character : MonoBehaviour
 {
+    public bool controlled;
     public bool mainCharacter;
     public Sprite portrait;
     public Transform target;
@@ -21,9 +22,15 @@ public class Character : MonoBehaviour
 
     public bool targetReached;
     public UnityEvent onTargetReached = new UnityEvent();
+
+
+    //[Header("RecordingSettings")]
+    
     // Start is called before the first frame update
     void Start()
     {
+        target = new GameObject().transform;
+        target.position = transform.position;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
@@ -47,11 +54,13 @@ public class Character : MonoBehaviour
         }
         if (target)
         {
+            rb.MovePosition(Vector3.Lerp(transform.position, target.position, moveSpeed * Time.deltaTime));
             if (Vector3.Distance(transform.position, target.position) > stopDis)
             {
                 targetReached = false;
                 //move towards target
-                rb.MovePosition(transform.position + (target.position - transform.position).normalized * moveSpeed * Time.deltaTime);
+                //rb.MovePosition(transform.position + (target.position - transform.position).normalized * moveSpeed * Time.deltaTime);
+                //rb.MovePosition(Vector3.Lerp(transform.position, target.position, moveSpeed * Time.deltaTime));
                 
             }
             else

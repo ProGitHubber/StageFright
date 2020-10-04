@@ -8,6 +8,8 @@ public class Note
 {
     public List<bool> currentlyPlaying = new List<bool>();
 
+    public bool cleared = true;
+
     public void populateNote(int layers)
     {
         for (int i = 0; i < layers; i++)
@@ -53,6 +55,10 @@ public class Sequencer : MonoBehaviour
     public int currentMaxActiveNotes;
     public int currentActiveNotes;
 
+    public bool mistakeMade;
+
+    public List<bool> signalsRecieved = new List<bool>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,6 +66,11 @@ public class Sequencer : MonoBehaviour
 
         currentMaxActiveNotes = startingActiveNotes;
         RandomiseNotes();
+        signalsRecieved.Clear();
+        for (int i = layers; i > 0; i--)
+        {
+            signalsRecieved.Add(new bool());
+        }
     }
 
     [ContextMenu("Initialise Notes")]
@@ -90,9 +101,12 @@ public class Sequencer : MonoBehaviour
             timeUntilNextBeat -= Time.deltaTime;
             if (timeUntilNextBeat <= 0)
             {
+                if (output.Count == signalsRecieved.Count)
+                    CheckCorrectPressed();
                 currentNote++;
                 if (currentNote >= notes.Count)
                 {
+                    RandomiseNotes();
                     currentNote = 0;
                 }
 
@@ -100,6 +114,14 @@ public class Sequencer : MonoBehaviour
                 onNewNote.Invoke();
                 timeUntilNextBeat = 60 / bpm;
             }
+        }
+    }
+
+    public void CheckCorrectPressed()
+    {
+        if (output[output.Count-1 ])
+        {
+
         }
     }
 
@@ -114,7 +136,7 @@ public class Sequencer : MonoBehaviour
     public void ToggleRandomNote()
     {
 
-        int note = Random.Range(0, notes.Count);
+        int note = Random.Range(1, notes.Count);
         int layer = Random.Range(0, layers);
         if (!notes[note].currentlyPlaying[layer])
         {
@@ -132,6 +154,7 @@ public class Sequencer : MonoBehaviour
             if (currentMaxActiveNotes > maxActiveNotes)
             {
                 currentMaxActiveNotes = maxActiveNotes;
+                bpm += 3;
             }
         }
 

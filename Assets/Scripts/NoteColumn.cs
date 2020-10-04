@@ -13,6 +13,7 @@ public class NoteColumn : MonoBehaviour
 
     Image columnBackground;
     public Color highlightCol = Color.grey;
+    public Color failColor = Color.red;
 
     private void Start()
     {
@@ -26,6 +27,10 @@ public class NoteColumn : MonoBehaviour
         if (int.Parse(columnID) == s.currentNote && s.playing)
         {
             columnBackground.color = highlightCol;
+        }
+        else if (!s.notes[int.Parse(columnID)].cleared)
+        {
+            columnBackground.color = failColor;
         }
         else
         {
