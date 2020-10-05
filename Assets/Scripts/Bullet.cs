@@ -4,45 +4,45 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float lifeTime = 2;
+    public float NumberOfMoves = 2;
     public float deathTime = 1;
-    public float speed = 3;
+    public float moveDistance;
     public Transform target;
+
+    public int layer;
+
+    Sequencer s;
+
+    private void Start()
+    {
+        target = new GameObject().transform;
+        target.position = transform.position;
+        s = FindObjectOfType<Sequencer>();
+        s.onNewNote.AddListener(Move);
+    }
+
+    void Move()
+    {
+        target.position += transform.forward * moveDistance;
+        NumberOfMoves--;
+        if (NumberOfMoves <= 0)
+        {
+            moveDistance = 0;
+            Destroy(gameObject, deathTime);
+        }
+    }
     private void Update()
     {
-        lifeTime -= Time.deltaTime;
-        if (lifeTime <= 0)
-        {
-            Destroy(gameObject, deathTime);
-            speed = 0;
-        }
-        if (target)
-        {
-            transform.position = Vector3.Lerp(transform.position, target.position, 10 * Time.deltaTime);
-        }
-        else
-        {
-            transform.position += transform.forward * speed * Time.deltaTime;
-        }
+        transform.position = Vector3.Lerp(transform.position, target.position, 10 * Time.deltaTime);
     }
 
-    void MoveToNearestTarget()
-    {
-
-        //findclosestone
-
-        //setclosestoneastarget
-    }
     private void OnTriggerEnter(Collider other)
     {
-        //checkforenemy
-        EnemyAI e = other.GetComponentInParent<EnemyAI>();
-
-        if (e)
+        Zombie z = other.GetComponentInParent<Zombie>();
+        if (z)
         {
-            e.ReturnHome();
-            gameObject.SetActive(false);
+            z.Hit(this);
+            Destroy(gameObject);
         }
-        //deal damage
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class Note
@@ -45,7 +46,7 @@ public class Sequencer : MonoBehaviour
 
     public bool playing;
 
-    public UnityEvent onNewNote = new UnityEvent();
+    public UnityEvent onNewNote = new UnityEvent(), onNewLoop = new UnityEvent();
 
     public int maxNotes;
     public int currentNotes;
@@ -93,6 +94,12 @@ public class Sequencer : MonoBehaviour
         }
     }
 
+    public GameObject GameOverScreen, startScreen;
+    public void GameOver()
+    {
+        GameOverScreen.SetActive(true);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -106,13 +113,26 @@ public class Sequencer : MonoBehaviour
                 currentNote++;
                 if (currentNote >= notes.Count)
                 {
-                    RandomiseNotes();
+                    onNewLoop.Invoke();
+                    ToggleRandomNote();
                     currentNote = 0;
                 }
 
                 output = notes[currentNote].currentlyPlaying;
                 onNewNote.Invoke();
                 timeUntilNextBeat = 60 / bpm;
+            }
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.R))
+            {
+                SceneManager.LoadScene(0);
+            }
+            if (Input.GetKey(KeyCode.Space) && !GameOverScreen.activeInHierarchy)
+            {
+                startScreen.SetActive(false);
+                playing = true;
             }
         }
     }
@@ -154,7 +174,7 @@ public class Sequencer : MonoBehaviour
             if (currentMaxActiveNotes > maxActiveNotes)
             {
                 currentMaxActiveNotes = maxActiveNotes;
-                bpm += 3;
+                //bpm += 3;
             }
         }
 

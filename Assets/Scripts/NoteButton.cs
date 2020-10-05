@@ -24,23 +24,7 @@ public class NoteButton : MonoBehaviour
         
         int note = int.Parse(buttonID.Substring(0, 2));
         int layer = int.Parse(buttonID.Substring(2, 2));
-        if (note == 0)
-        {
-            b.image.color = Color.clear;
-            return;
-        }
-        if (s.currentNote > note)
-        {
-            if (s.notes[note].cleared)
-            {
-                b.image.color = successColor;
-            }
-            else
-            {
-                b.image.color = failColor;
-            }
-            return;
-        }
+
         if (s.notes[note].currentlyPlaying[layer])
         {
             if (s.currentNote == note)

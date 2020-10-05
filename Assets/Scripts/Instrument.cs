@@ -5,93 +5,50 @@ using UnityEngine.Events;
 
 public class Instrument : MonoBehaviour
 {
-    Sequencer s;
     Animator anim;
     public int layer;
 
-    public float lightAttackCooldown;
-    float cooldownTimer;
-    public UnityEvent onLightAttack, onHeavyAttack;
+    public UnityEvent onLightAttack;
 
     public Bullet bulletPrefab;
     public Transform[] attackOrigins;
     public GameObject heavyAttack;
     public float heavyAttackDelay = 0.25f;
 
-    public KeyCode key = KeyCode.Alpha1;
-
-    Character c;
+    BandMember c;
     // Start is called before the first frame update
     void Start()
     {
-        c = GetComponentInParent<Character>();
+        c = GetComponentInParent<BandMember>();
+        layer = c.layer;
         anim = GetComponent<Animator>();
-        s = FindObjectOfType<Sequencer>();
-        s.onNewNote.AddListener(PlayNote);
     }
 
-    private void Update()
+
+
+    void Lattack()
     {
-        if (cooldownTimer >= 0)
+        onLightAttack.Invoke();
+        if (bulletPrefab)
         {
-            cooldownTimer -= Time.deltaTime;
-        }
+            foreach (Transform attackOrigin in attackOrigins)
+            {
+                if (attackOrigin.gameObject.activeInHierarchy)
+                {
+                    Bullet b = Instantiate(bulletPrefab.gameObject, attackOrigin.position, attackOrigin.rotation).GetComponent<Bullet>();
+                    b.layer = layer;
+                }
 
-        if (Input.GetKeyDown(key))
-        {
-            //s.signalsRecieved[layer] = "1";
-            anim.SetTrigger("Attack");
-            Invoke("HeavyAttack", heavyAttackDelay);
-        }
-    }
-
-    void PlayNote()
-    {
-        if (s.output[layer])
-        {
-            //do stuff
-
-                //anim.SetTrigger("Attack");
-                //Invoke("HeavyAttack", heavyAttackDelay);
+            }
         }
     }
+    
+
 
     public void LightAttack()
     {
-        if (cooldownTimer <= 0)
-        {
-            onLightAttack.Invoke();
-            if (bulletPrefab)
-            {
-                foreach (Transform attackOrigin in attackOrigins)
-                {
-                    if (attackOrigin.gameObject.activeInHierarchy)
-                        Instantiate(bulletPrefab.gameObject, attackOrigin.position, attackOrigin.rotation);
-                }
-            }
-            cooldownTimer = lightAttackCooldown;
-        }
+        anim.SetTrigger("Attack");
+        Invoke("Lattack", heavyAttackDelay);
     }
 
-    void HeavyAttack()
-    {
-        onHeavyAttack.Invoke();
-        if (heavyAttack)
-            heavyAttack.SetActive(true);
-        //onLightAttack.Invoke();
-        //if (bulletPrefab)
-        //{
-        //    foreach (Transform attackOrigin in attackOrigins)
-        //    {
-        //        if (attackOrigin.gameObject.activeInHierarchy)
-        //            Instantiate(bulletPrefab.gameObject, attackOrigin.position, attackOrigin.rotation);
-        //    }
-        //}
-        //cooldownTimer = lightAttackCooldown;
-    }
-    public void Unplug()
-    {
-        s.onNewNote.RemoveAllListeners();
-        enabled = false;
-    }
 }

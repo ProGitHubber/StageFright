@@ -46,7 +46,7 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -4858,10 +4858,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a00ff87e04b5ca649bd79fd19d78d553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeTime: 1
+  NumberOfMoves: 5
   deathTime: 1
-  speed: 3
+  moveDistance: 2
   target: {fileID: 0}
+  layer: 0
 --- !u!95 &4092877658325531121
 Animator:
   serializedVersion: 3
