@@ -94,15 +94,31 @@ public class Sequencer : MonoBehaviour
         }
     }
 
-    public GameObject GameOverScreen, startScreen;
+    public GameObject GameOverScreen, startScreen, UI;
     public void GameOver()
     {
+        UI.SetActive(false);
+        gameOver.Play();
         GameOverScreen.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameStart.isPlaying && mainLoop.isPlaying)
+        {
+            mainLoop.Stop();
+        }
+        if (!gameStart.isPlaying && !mainLoop.isPlaying)
+        {
+            mainLoop.Play();
+        }
+        if (gameOver.isPlaying)
+        {
+            mainLoop.Stop();
+        }
+
+
         if (playing)
         {
             timeUntilNextBeat -= Time.deltaTime;
@@ -125,17 +141,21 @@ public class Sequencer : MonoBehaviour
         }
         else
         {
-            if (Input.GetKey(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R))
             {
                 SceneManager.LoadScene(0);
             }
-            if (Input.GetKey(KeyCode.Space) && !GameOverScreen.activeInHierarchy)
+            if (Input.GetButtonDown("Fire1") && !GameOverScreen.activeInHierarchy)
             {
+                UI.SetActive(true);
                 startScreen.SetActive(false);
+                gameStart.Play();
                 playing = true;
             }
         }
     }
+
+    public AudioSource gameOver, mainLoop, gameStart;
 
     public void CheckCorrectPressed()
     {
@@ -156,7 +176,7 @@ public class Sequencer : MonoBehaviour
     public void ToggleRandomNote()
     {
 
-        int note = Random.Range(1, notes.Count);
+        int note = Random.Range(0, notes.Count);
         int layer = Random.Range(0, layers);
         if (!notes[note].currentlyPlaying[layer])
         {

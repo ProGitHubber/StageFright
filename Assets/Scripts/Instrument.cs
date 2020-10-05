@@ -14,7 +14,7 @@ public class Instrument : MonoBehaviour
     public Transform[] attackOrigins;
     public GameObject heavyAttack;
     public float heavyAttackDelay = 0.25f;
-
+    public AudioSource[] oneShotSounds;
     BandMember c;
     // Start is called before the first frame update
     void Start()
@@ -29,6 +29,7 @@ public class Instrument : MonoBehaviour
     void Lattack()
     {
         onLightAttack.Invoke();
+
         if (bulletPrefab)
         {
             foreach (Transform attackOrigin in attackOrigins)
@@ -42,11 +43,23 @@ public class Instrument : MonoBehaviour
             }
         }
     }
-    
 
+    int SoundToPlay()
+    {
+        int s = Random.Range(0, oneShotSounds.Length);
+        if (!oneShotSounds[s].isPlaying)
+        {
+            return s;
+        }
+        else
+        {
+            return SoundToPlay();
+        }
+    }
 
     public void LightAttack()
     {
+        //oneShotSounds[SoundToPlay()].Play();
         anim.SetTrigger("Attack");
         Invoke("Lattack", heavyAttackDelay);
     }

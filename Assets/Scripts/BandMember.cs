@@ -17,8 +17,11 @@ public class BandMember : MonoBehaviour
     public Sprite portrait;
     public GameObject selectionCircle;
     Transform target;
+    public Transform directionIndicator;
+
     private void Start()
     {
+        directionIndicator.parent = null;
         target = new GameObject().transform;
         target.position = transform.position;
         instrument = GetComponentInChildren<Instrument>();
@@ -41,30 +44,33 @@ public class BandMember : MonoBehaviour
     private void Update()
     {
 
-        if (controlled)
-        {
-            if (Input.GetKey("w"))
-            {
-                direction.z = -1;
-            }
-            else if (Input.GetKey("s"))
-            {
-                direction.z = 1;
-            }
+        //if (controlled)
+        //{
+        //    if (Input.GetKey("w"))
+        //    {
+        //        direction.z = -1;
+        //    }
+        //    else if (Input.GetKey("s"))
+        //    {
+        //        direction.z = 1;
+        //    }
 
-            if (Input.GetKey("a"))
-            {
-                direction.x = 1;
-            }
-            else if (Input.GetKey("d"))
-            {
-                direction.x = -1;
-            }
-        }
+        //    if (Input.GetKey("a"))
+        //    {
+        //        direction.x = 1;
+        //    }
+        //    else if (Input.GetKey("d"))
+        //    {
+        //        direction.x = -1;
+        //    }
+        //}
         float y = selectionCircle.transform.position.y;
         selectionCircle.transform.position = target.position + direction * stepDistance;
         selectionCircle.transform.position = new Vector3(selectionCircle.transform.position.x, y, selectionCircle.transform.position.z);
         rb.MovePosition(Vector3.Lerp(transform.position, target.position, 10 * Time.deltaTime));
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation((directionIndicator.position - transform.position).normalized), 10 * Time.deltaTime);
+        transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
 
     }
 }

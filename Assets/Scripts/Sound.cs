@@ -2,9 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sound : ScriptableObject
+[System.Serializable]
+public class Sound
 {
-    public int[] applicableNotes;
-    public AudioClip[] clips;
+    public AudioSource[] oneShotSounds;
 
+    public void PlayOneShot()
+    {
+        oneShotSounds[SoundToPlay()].Play();
+    }
+
+    int SoundToPlay()
+    {
+        int s = Random.Range(0, oneShotSounds.Length);
+        if (!oneShotSounds[s].isPlaying)
+        {
+            return s;
+        }
+        else
+        {
+            return SoundToPlay();
+        }
+    }
 }

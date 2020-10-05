@@ -12,29 +12,37 @@ public class CharacterMover : MonoBehaviour
 
     public LayerMask playermask, floormask;
 
+    public Transform controlCircle;
+
     int currentCharacter;
+
+    Sequencer s;
     // Start is called before the first frame update
     void Start()
     {
-        
+        s = FindObjectOfType<Sequencer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Alpha1))
+        if (!character && s.playing)
         {
             SwitchToCharacter(0);
         }
-        if (Input.GetKey(KeyCode.Alpha2))
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.Alpha1))
+        {
+            SwitchToCharacter(0);
+        }
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.Alpha2))
         {
             SwitchToCharacter(1);
         }
-        if (Input.GetKey(KeyCode.Alpha3))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.Alpha3))
         {
             SwitchToCharacter(2);
         }
-        if (Input.GetKey(KeyCode.Alpha4))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Alpha4))
         {
             SwitchToCharacter(3);
         }
@@ -61,14 +69,14 @@ public class CharacterMover : MonoBehaviour
 
         if (character)
         {
+            controlCircle.position = character.transform.position + Vector3.up * 0.1f;
             if (Input.GetButton("Fire1"))
             {
                 Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit2;
                 if (Physics.Raycast(ray2, out hit2, floormask))
                 {
-                    character.transform.rotation = Quaternion.Lerp(character.transform.rotation, Quaternion.LookRotation((hit2.point - character.transform.position).normalized), 10 * Time.deltaTime);
-                    character.transform.localEulerAngles = new Vector3(0, character.transform.localEulerAngles.y, 0);
+                    character.directionIndicator.position = hit2.point + Vector3.up * 0.01f;
                 }
             }
         }

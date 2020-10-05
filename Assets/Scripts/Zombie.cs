@@ -51,9 +51,10 @@ public class Zombie : MonoBehaviour
                 anim.SetTrigger("Walk");
             }
             float disToTarget = Vector3.Distance(transform.position, target.position);
-            if (disToTarget < moveDistance)
+            if (disToTarget <= moveDistance)
             {
                 s.playing = false;
+                target.GetComponent<Animator>().SetBool("Carried", true);
                 s.GameOver();
             }
             moveTarget.position = (transform.position + (target.position - transform.position).normalized * ((disToTarget<moveDistance) ? disToTarget : moveDistance));
@@ -63,6 +64,9 @@ public class Zombie : MonoBehaviour
     private void Update()
     {
         rb.MovePosition(Vector3.Lerp(transform.position, moveTarget.position, 10 * Time.deltaTime));
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation((target.position - transform.position).normalized), 10 * Time.deltaTime);
+        transform.localEulerAngles = new Vector3(0, transform.localEulerAngles.y, 0);
     }
 
     public void Hit(Bullet hitBy)
