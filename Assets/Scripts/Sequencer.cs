@@ -109,14 +109,19 @@ public class Sequencer : MonoBehaviour
         {
             mainLoop.Stop();
         }
-        if (!gameStart.isPlaying && !mainLoop.isPlaying)
+        if (!gameStart.isPlaying && !mainLoop.isPlaying && !GameOverScreen.activeInHierarchy)
         {
             mainLoop.Play();
+            InvokeRepeating("PlayNextNote", 0, bpm / 60);
             playing = true;
         }
         if (gameOver.isPlaying)
         {
-            mainLoop.Stop();
+            if (mainLoop.isPlaying)
+            {
+                CancelInvoke();
+                mainLoop.Stop();
+            }
         }
 
 
@@ -125,19 +130,8 @@ public class Sequencer : MonoBehaviour
             timeUntilNextBeat -= Time.deltaTime;
             if (timeUntilNextBeat <= 0)
             {
-                if (output.Count == signalsRecieved.Count)
-                    CheckCorrectPressed();
-                currentNote++;
-                if (currentNote >= notes.Count)
-                {
-                    onNewLoop.Invoke();
-                    ToggleRandomNote();
-                    currentNote = 0;
-                }
 
-                output = notes[currentNote].currentlyPlaying;
-                onNewNote.Invoke();
-                timeUntilNextBeat = 60 / bpm;
+                timeUntilNextBeat = bpm/60;
             }
         }
         else
@@ -153,6 +147,22 @@ public class Sequencer : MonoBehaviour
                 gameStart.Play();
             }
         }
+    }
+
+    void PlayNextNote()
+    {
+        if (output.Count == signalsRecieved.Count)
+            CheckCorrectPressed();
+        currentNote++;
+        if (currentNote >= notes.Count)
+        {
+            onNewLoop.Invoke();
+            ToggleRandomNote();
+            currentNote = 0;
+        }
+
+        output = notes[currentNote].currentlyPlaying;
+        onNewNote.Invoke();
     }
 
     public AudioSource gameOver, mainLoop, gameStart;
