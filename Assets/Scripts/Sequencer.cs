@@ -112,6 +112,7 @@ public class Sequencer : MonoBehaviour
         if (!gameStart.isPlaying && !mainLoop.isPlaying)
         {
             mainLoop.Play();
+            playing = true;
         }
         if (gameOver.isPlaying)
         {
@@ -145,12 +146,11 @@ public class Sequencer : MonoBehaviour
             {
                 SceneManager.LoadScene(0);
             }
-            if (Input.GetButtonDown("Fire1") && !GameOverScreen.activeInHierarchy)
+            if (Input.GetButtonDown("Fire1") && !GameOverScreen.activeInHierarchy && !UI.activeInHierarchy)
             {
                 UI.SetActive(true);
                 startScreen.SetActive(false);
                 gameStart.Play();
-                playing = true;
             }
         }
     }
